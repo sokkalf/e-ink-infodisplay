@@ -28,7 +28,6 @@ import epd7in5
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
-#import imagedata
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
@@ -38,7 +37,7 @@ def main():
     epd.init()
 
     # For simplicity, the arguments are explicit numerical coordinates
-    image = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 1)    # 1: clear the frame
+    image = Image.new('1', (EPD_HEIGHT, EPD_WIDTH), 1)    # 1: clear the frame
     draw = ImageDraw.Draw(image)
     font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 24)
     draw.rectangle((0, 6, 640, 30), fill = 0)
@@ -47,7 +46,12 @@ def main():
     draw.arc((240, 120, 580, 220), 0, 360, fill = 255)
     draw.rectangle((0, 80, 160, 280), fill = 255)
     draw.arc((40, 80, 180, 220), 0, 360, fill = 0)
-    epd.display_frame(epd.get_frame_buffer(image))
+    print image.width
+
+    image2 = image.rotate(90, False, True)
+
+    print image2.width
+    epd.display_frame(epd.get_frame_buffer(image2))
 
     image = Image.open('skrik.bmp')
     epd.display_frame(epd.get_frame_buffer(image))
