@@ -1,0 +1,5 @@
+weather:
+  url: "https://www.yr.no/sted/Norge/Akershus/Asker/Heggedal/varsel.xml"
+calendar:
+  username: "user"
+  password: "password"

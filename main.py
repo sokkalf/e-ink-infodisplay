@@ -5,6 +5,7 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from yr import Yr
+import yaml
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
@@ -12,7 +13,8 @@ EPD_HEIGHT = 384
 def main():
     epd = epd7in5.EPD()
     epd.init()
-    yr = Yr("https://www.yr.no/sted/Norge/Akershus/Asker/Heggedal/varsel.xml")
+    config = yaml.load(open('config.yml'))
+    yr = Yr(config['weather']['url'])
 
     weather_symbol = Image.open(yr.get_weather_symbol())
     image = Image.open('img/main.bmp')
