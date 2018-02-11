@@ -1,3 +1,4 @@
+# coding=utf-8
 ##
  #  @filename   :   main.cpp
  #  @brief      :   7.5inch e-paper display demo
@@ -36,28 +37,17 @@ def main():
     epd = epd7in5.EPD()
     epd.init()
 
-    # For simplicity, the arguments are explicit numerical coordinates
-    image = Image.new('1', (EPD_HEIGHT, EPD_WIDTH), 1)    # 1: clear the frame
+    sun = Image.open('img/cloud_snow.bmp')
+    image = Image.open('img/main.bmp')
     draw = ImageDraw.Draw(image)
-    font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 24)
-    draw.rectangle((0, 6, 640, 30), fill = 0)
-    draw.text((200, 10), 'Huba?', font = font, fill = 255)
-    draw.rectangle((200, 80, 600, 280), fill = 0)
-    draw.arc((240, 120, 580, 220), 0, 360, fill = 255)
-    draw.rectangle((0, 80, 160, 280), fill = 255)
-    draw.arc((40, 80, 180, 220), 0, 360, fill = 0)
-    print image.width
-
-    image2 = image.rotate(90, False, True)
-
-    print image2.width
-    epd.display_frame(epd.get_frame_buffer(image2))
-
-    image = Image.open('skrik.bmp')
+    font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 48)
+    draw.text((20, 25), u'-2°C', font = font, fill = 0)
+    image.paste(sun, (200, 21))
+    image = image.rotate(90, False, True)
     epd.display_frame(epd.get_frame_buffer(image))
 
-    # You can get frame buffer from an image or import the buffer directly:
-    #epd.display_frame(imagedata.MONOCOLOR_BITMAP)
+    image = Image.open('img/skrik.bmp')
+    epd.display_frame(epd.get_frame_buffer(image))
 
 if __name__ == '__main__':
     main()
