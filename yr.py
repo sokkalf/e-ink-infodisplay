@@ -1,6 +1,7 @@
 # coding=utf-8
 import urllib2
 import xmltodict
+from mlstripper import MLStripper
 
 class Yr:
     weather_symbols = {
@@ -30,6 +31,10 @@ class Yr:
 
     def get_weather_type(self):
         return self.weather_data['weatherdata']['forecast']['tabular']['time'][0]['symbol']['@name']
+
+    def get_forecast(self):
+        m = MLStripper()
+        return m.strip_tags(self.weather_data['weatherdata']['forecast']['text']['location']['time'][0]['body'])
 
     def refresh(self):
         self.weather_data = self.get_weather()
