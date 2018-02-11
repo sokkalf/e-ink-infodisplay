@@ -9,3 +9,4 @@
 
 - Python (not my favourite, but easiest to get going with available libs)
 - On raspbian, install packages wiringpi, python-spidev and python-pil
+- Package fonts-freefont-ttf is needed for the font rendering
