@@ -6,6 +6,9 @@ from mlstripper import MLStripper
 class Yr:
     weather_symbols = {
         1:  'img/sun_clear.bmp',
+        2:  'img/sun_small_cloud.bmp',
+        3:  'img/sun_large_cloud.bmp',
+        4:  'img/cloudy.bmp',
         13: 'img/cloud_snow.bmp',
     }
 
