@@ -1,5 +1,6 @@
 weather:
   url: "https://www.yr.no/sted/Norge/Akershus/Asker/Heggedal/varsel.xml"
 calendar:
+  url: "http://www.huba.com"
   username: "user"
   password: "password"

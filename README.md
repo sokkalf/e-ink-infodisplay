@@ -12,3 +12,4 @@
 - Package fonts-freefont-ttf is needed for the font rendering
 - Package python-xmltodict is needed for parsing data from Yr
 - python-yaml for config
+- python-caldav for calendar, install with "pip install git+https://github.com/python-caldav/caldav.git"

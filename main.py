@@ -5,6 +5,7 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from yr import Yr
+from readcal import Readcal
 import yaml
 
 EPD_WIDTH = 640
@@ -15,7 +16,7 @@ def main():
     epd.init()
     config = yaml.load(open('config.yml'))
     yr = Yr(config['weather']['url'])
-
+    cal = Readcal(config['calendar']['url'], config['calendar']['username'], config['calendar']['password'])
     weather_symbol = Image.open(yr.get_weather_symbol())
     image = Image.open('img/main.bmp')
     draw = ImageDraw.Draw(image)
@@ -24,6 +25,12 @@ def main():
     font_small = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 20)
     draw.text((10, 90), yr.get_weather_type(), font = font_small, fill = 0)
     image.paste(weather_symbol, (200, 21))
+    base_calendar_text_pos = 180
+    offset_calendar_text_pos = 0
+    for calendar_event in cal.get_next_events():
+        draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event, font = font_small, fill = 0)
+        offset_calendar_text_pos = offset_calendar_text_pos + 25
+
     image = image.rotate(90, False, True)
     epd.display_frame(epd.get_frame_buffer(image))
 
