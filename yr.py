@@ -28,6 +28,9 @@ class Yr:
         symbol = int(self.weather_data['weatherdata']['forecast']['tabular']['time'][0]['symbol']['@number'])
         return Yr.weather_symbols[symbol]
 
+    def get_weather_type(self):
+        return self.weather_data['weatherdata']['forecast']['tabular']['time'][0]['symbol']['@name']
+
     def refresh(self):
         self.weather_data = self.get_weather()
 
