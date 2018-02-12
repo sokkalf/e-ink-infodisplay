@@ -29,7 +29,7 @@ def display_info(display, yr, cal):
     base_calendar_text_pos = 180
     offset_calendar_text_pos = 0
     for calendar_event in cal.get_next_events():
-        draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event[1], font = font_small, fill = 0)
+        draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event[0].strftime('%H:%M') + " "+ calendar_event[1], font = font_small, fill = 0)
         offset_calendar_text_pos = offset_calendar_text_pos + 25
 
     image = image.rotate(90, False, True)
