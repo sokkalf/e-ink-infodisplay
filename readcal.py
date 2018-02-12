@@ -17,7 +17,8 @@ class Readcal:
         events = []
         for r in results:
             event = vobject.readOne(r.data)
-            events = events + [event.vevent.summary.valueRepr().decode('utf8')]
+            events = events + [(event.vevent.dtstart.valueRepr(),event.vevent.summary.valueRepr().decode('utf8'))]
 
+        events = sorted(events, key=lambda tup: tup[0])
         return events
 
