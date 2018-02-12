@@ -2,6 +2,8 @@
 import urllib2
 import xmltodict
 from mlstripper import MLStripper
+from datetime import datetime
+from datetime import timedelta
 
 class Yr:
     weather_symbols = {
@@ -13,16 +15,22 @@ class Yr:
     }
 
     def __init__(self, url):
+        self.last_refreshed_at = None
         self.weather_url = url
         self.weather_data = self.get_weather()
 
     def get_weather(self):
+        if self.last_refreshed_at is not None and self.last_refreshed_at > datetime.now()-timedelta(minutes=10):
+            print "using cached yr data"
+            return self.weather_data
+
         file = urllib2.urlopen(self.weather_url)
         print "fetching data from yr"
         data = file.read()
         file.close()
         data = xmltodict.parse(data)
         self.weather_data = data
+        self.last_refreshed_at = datetime.now()
         return data
 
     def get_temperature(self):
