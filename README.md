@@ -13,3 +13,10 @@
 - Package python-xmltodict is needed for parsing data from Yr
 - python-yaml for config
 - python-caldav for calendar, install with "pip install git+https://github.com/python-caldav/caldav.git"
+- ImageMagick for simulate mode
+
+## Usage
+
+Run with `python main.py`
+
+For simulate mode, `python main.py --simulate` (Requires X forwarding if running in an SSH session)
