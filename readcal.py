@@ -8,6 +8,15 @@ import vobject
 import caldav
 
 class Readcal:
+    weekdays = {
+        1:  u'Mandag',
+        2:  u'Tirsdag',
+        3:  u'Onsdag',
+        4:  u'Torsdag',
+        5:  u'Fredag',
+        6:  u'Lørdag',
+        7:  u'Søndag',
+    }
     def __init__(self, url, username, password):
         client = caldav.DAVClient(url, username=username, password=password)
         principal = client.principal()

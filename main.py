@@ -5,6 +5,9 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 from PIL import ImageShow
+from datetime import datetime
+from datetime import timedelta
+from dateutil import tz
 
 from yr import Yr
 from readcal import Readcal
@@ -32,13 +35,26 @@ def display_info(display, yr, cal):
     image = Image.open('img/main.bmp')
     draw = ImageDraw.Draw(image)
     font_large = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 48)
+    font_small = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 20)
+    font_small_bold = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 20)
     draw.text((20, 45), yr.get_temperature() + u'°C', font = font_large, fill = 0)
-    font_small = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeMonoBold.ttf', 20)
-    draw.text((10, 90), yr.get_weather_type(), font = font_small, fill = 0)
+    draw.text((10, 90), yr.get_weather_type(), font = font_small_bold, fill = 0)
     image.paste(weather_symbol, (200, 21))
     base_calendar_text_pos = 180
     offset_calendar_text_pos = 0
     for calendar_event in cal.get_next_events():
+        if calendar_event[0].replace(tzinfo=None).date() == datetime.today().date():
+            None
+        elif calendar_event[0].replace(tzinfo=None).date() == (datetime.today()+timedelta(days=1)).date():
+            draw.text((125, base_calendar_text_pos+offset_calendar_text_pos), u"— I morgen —", font=font_small_bold, fill=0)
+            offset_calendar_text_pos = offset_calendar_text_pos + 25
+        elif calendar_event[0].replace(tzinfo=None).date() > (datetime.today()+timedelta(days=1)).date() and \
+                calendar_event[0].replace(tzinfo=None).date() < (datetime.today()+timedelta(days=6)).date():
+            draw.text((125, base_calendar_text_pos+offset_calendar_text_pos), u"— " + Readcal.weekdays[calendar_event[0].isoweekday()] + u" —", font=font_small_bold, fill=0)
+            offset_calendar_text_pos = offset_calendar_text_pos + 25
+        else:
+            draw.text((125, base_calendar_text_pos+offset_calendar_text_pos), u"— " + calendar_event[0].strftime('%d.%m.%Y') + u" —", font=font_small_bold, fill=0)
+            offset_calendar_text_pos = offset_calendar_text_pos + 25
         draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event[0].strftime('%H:%M') + " "+ calendar_event[1], font = font_small, fill = 0)
         offset_calendar_text_pos = offset_calendar_text_pos + 25
 
