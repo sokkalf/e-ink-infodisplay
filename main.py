@@ -4,17 +4,27 @@ import epd7in5
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
+from PIL import ImageShow
 
 from yr import Yr
 from readcal import Readcal
 import yaml
 import time
+import argparse
 
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
 prev_image_hash = None
+
+
+def show_image(display, image):
+    if display==None:
+        image.show()
+    else:
+        display.display_frame(display.get_frame_buffer(image))
+
 
 def display_info(display, yr, cal):
     global prev_image_hash
@@ -32,18 +42,28 @@ def display_info(display, yr, cal):
         draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event[0].strftime('%H:%M') + " "+ calendar_event[1], font = font_small, fill = 0)
         offset_calendar_text_pos = offset_calendar_text_pos + 25
 
-    image = image.rotate(90, False, True)
+    if display != None:
+        image = image.rotate(90, False, True)
+
     image_hash = hash(image.tobytes())
     print image_hash
     if prev_image_hash != image_hash:
-        display.display_frame(display.get_frame_buffer(image))
+        show_image(display, image)
 
     prev_image_hash = image_hash
 
 
 def main():
-    epd = epd7in5.EPD()
-    epd.init()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--simulate', help='Simulate e-ink display', action='store_true')
+    args = parser.parse_args()
+
+    if args.simulate:
+        epd = None
+    else:
+        epd = epd7in5.EPD()
+        epd.init()
+
     config = yaml.load(open('config.yml'))
     yr = Yr(config['weather']['url'])
     cal = Readcal(config['calendar']['url'], config['calendar']['username'], config['calendar']['password'])
@@ -52,8 +72,6 @@ def main():
         time.sleep(60)
         yr.refresh()
 
-    image = Image.open('img/skrik.bmp')
-    epd.display_frame(epd.get_frame_buffer(image))
 
 if __name__ == '__main__':
     main()
