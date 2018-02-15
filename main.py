@@ -14,13 +14,13 @@ from readcal import Readcal
 import yaml
 import time
 import argparse
-
+import os
 
 EPD_WIDTH = 640
 EPD_HEIGHT = 384
 
 prev_image_hash = None
-
+fortune = os.popen("fortune -n 80 -s | fold -w 40").read()
 
 def show_image(display, image):
     if display==None:
@@ -31,6 +31,7 @@ def show_image(display, image):
 
 def display_info(display, yr, cal):
     global prev_image_hash
+    global fortune
     weather_symbol = Image.open(yr.get_weather_symbol())
     image = Image.open('img/main.bmp')
     draw = ImageDraw.Draw(image)
@@ -57,6 +58,8 @@ def display_info(display, yr, cal):
             offset_calendar_text_pos = offset_calendar_text_pos + 25
         draw.text((10, base_calendar_text_pos+offset_calendar_text_pos), calendar_event[0].strftime('%H:%M') + " "+ calendar_event[1], font = font_small, fill = 0)
         offset_calendar_text_pos = offset_calendar_text_pos + 25
+
+    draw.text((5, 580), fortune, font=font_small, fill=0)
 
     if display != None:
         image = image.rotate(90, False, True)
