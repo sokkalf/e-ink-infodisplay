@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import epd7in5
 from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
@@ -80,6 +79,7 @@ def main():
     if args.simulate:
         epd = None
     else:
+        import epd7in5
         epd = epd7in5.EPD()
         epd.init()
 
